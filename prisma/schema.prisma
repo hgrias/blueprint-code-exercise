@@ -12,3 +12,34 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Assessment {
+  id          String @id @unique
+  name        String
+  displayName String
+  fullName    String
+  disorder    String
+}
+
+model Domain {
+  id        String     @id @unique
+  name      String     @unique
+  questions Question[]
+}
+
+model Question {
+  id       String          @id @unique
+  title    String
+  domainId String
+  domain   Domain          @relation(fields: [domainId], references: [id])
+  answers  PatientAnswer[]
+}
+
+model PatientAnswer {
+  id           String   @id @default(cuid())
+  questionId   String
+  question     Question @relation(fields: [questionId], references: [id])
+  value        Int
+  assessmentId String?
+  createdAt    DateTime @default(now())
+}
