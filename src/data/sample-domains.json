@@ -1,0 +1,26 @@
+[
+  {
+    "id": "depression",
+    "name": "Depression",
+    "description": "Depression is a common mental health condition characterized by persistent feelings of sadness, hopelessness, and loss of interest. It can significantly impact a person's thoughts, emotions, and behaviors.",
+    "threshold": 2
+  },
+  {
+    "id": "anxiety",
+    "name": "Anxiety",
+    "description": "Anxiety is a mental health condition characterized by persistent and excessive worry, fear, or panic that interferes with daily activities and can cause significant distress.",
+    "threshold": 2
+  },
+  {
+    "id": "substance_use",
+    "name": "Substance Use",
+    "description": "Substance use disorder involves the harmful or hazardous use of psychoactive substances, including alcohol and illicit drugs, leading to dependence and potential health and social problems.",
+    "threshold": 1
+  },
+  {
+    "id": "mania",
+    "name": "Mania",
+    "description": "Mania is a mood state characterized by abnormally elevated energy levels, mood, and behavior, often associated with bipolar disorder, which can lead to impulsive and risky actions.",
+    "threshold": 2
+  }
+]

@@ -1,0 +1,20 @@
+[
+  {
+    "id": "PHQ-9",
+    "name": "Patient Health Questionnaire-9",
+    "description": "A widely used self-report questionnaire designed to assess the severity and presence of depression.",
+    "referenceUrl": "https://www.mdcalc.com/calc/1725/phq9-patient-health-questionnaire9"
+  },
+  {
+    "id": "ASRM",
+    "name": "Altman Self-Rating Mania Scale",
+    "description": "A 5 question questionnaire to screen and stage severity of hypomania/mania.",
+    "referenceUrl": "https://reference.medscape.com/calculator/468/altman-self-rating-mania-scale-asrm"
+  },
+  {
+    "id": "ASSIST",
+    "name": "The Alcohol, Smoking and Substance Involvement Screening Test",
+    "description": "A technical tool to assist with early identification of substance use related health risks and substance use disorders in primary health care, general medical care and other settings.",
+    "referenceUrl": "https://www.who.int/publications/i/item/978924159938-2"
+  }
+]

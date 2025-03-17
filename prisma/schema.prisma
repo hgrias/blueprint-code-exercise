@@ -13,7 +13,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Assessment {
+model Screener {
   id          String @id @unique
   name        String
   displayName String
@@ -22,9 +22,21 @@ model Assessment {
 }
 
 model Domain {
-  id        String     @id @unique
-  name      String     @unique
-  questions Question[]
+  id           String      @id @unique
+  name         String      @unique
+  description  String?
+  threshold    Int         @default(2)
+  assessmentId String?
+  assessment   Assessment? @relation(fields: [assessmentId], references: [id])
+  questions    Question[]
+}
+
+model Assessment {
+  id           String   @id @unique
+  name         String?
+  description  String?
+  referenceUrl String?
+  Domain       Domain[]
 }
 
 model Question {
