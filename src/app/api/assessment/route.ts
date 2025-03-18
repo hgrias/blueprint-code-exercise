@@ -63,21 +63,22 @@ export async function POST(request: NextRequest) {
         (domainScores[domainInfo.domainId] || 0) + answer.value;
     });
 
-    // Determine assessments based on domain scores and domain thresholds
-    const results: string[] = Object.entries(domainScores)
-      .filter(([domainId, score]) => {
-        const domainInfo = Object.values(questionToDomainMap).find(
-          (info) => info.domainId === domainId
-        );
-        return domainInfo && score >= domainInfo.threshold;
-      })
-      .map(([domainId]) => {
-        const domainInfo = Object.values(questionToDomainMap).find(
-          (info) => info.domainId === domainId
-        );
-        return domainInfo ? domainInfo.assessment : "";
-      })
-      .filter(Boolean);
+    // Determine assessments based on domain scores and thresholds
+    const results: string[] = [];
+
+    // Get assessments for domains
+    for (const [domainId, score] of Object.entries(domainScores)) {
+      // Get the scoring threshold and relevant assessment for the domain
+      const { threshold, assessment } = questionToDomainMap[domainId];
+
+      // Check if domain score meets its threshold
+      if (score >= threshold) {
+        // Add assessment if not already in results
+        if (!results.includes(assessment)) {
+          results.push(assessment);
+        }
+      }
+    }
 
     // TODO: Store answers in DB for specific user
 
