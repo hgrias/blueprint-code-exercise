@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const answerSchema = z.object({
-  questionId: z
+  question_id: z
     .string()
     .min(1, "QuestionId is required")
     .describe("The Question ID"),
@@ -14,3 +14,11 @@ export const answerSchema = z.object({
 });
 
 export type Answer = z.infer<typeof answerSchema>;
+
+export const DomainObjectSchema = z.object({
+  domainId: z.string(),
+  threshold: z.number().int().min(0),
+  assessment: z.string(),
+});
+
+export type DomainObject = z.infer<typeof DomainObjectSchema>;

@@ -40,18 +40,8 @@ model Assessment {
 }
 
 model Question {
-  id       String          @id @unique
+  id       String @id @unique
   title    String
   domainId String
-  domain   Domain          @relation(fields: [domainId], references: [id])
-  answers  PatientAnswer[]
-}
-
-model PatientAnswer {
-  id           String   @id @default(cuid())
-  questionId   String
-  question     Question @relation(fields: [questionId], references: [id])
-  value        Int
-  assessmentId String?
-  createdAt    DateTime @default(now())
+  domain   Domain @relation(fields: [domainId], references: [id])
 }
