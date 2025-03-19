@@ -38,10 +38,13 @@ export default function CompletionScreen({
                 href={assessment.referenceUrl || ""}
                 target="_blank"
                 rel="noopener noreferrer"
+                className="group"
               >
                 <Card className="hover:bg-muted/50 transition-colors min-h-24">
                   <CardHeader>
-                    <h4 className="text-lg font-semibold">{assessment.name}</h4>
+                    <h4 className="text-lg font-semibold group-hover:underline transition-all">
+                      {assessment.name} ({assessment.id})
+                    </h4>
                     {assessment.description && (
                       <p className="text-muted-foreground text-sm">
                         {assessment.description}
