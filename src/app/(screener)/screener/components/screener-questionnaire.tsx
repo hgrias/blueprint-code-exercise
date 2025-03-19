@@ -54,26 +54,30 @@ export default function ScreenerQuestionnaire({
 
   // Handle answer selection
   const handleAnswerSelected = (answer: ScreenerAnswerOption) => {
-    // Save the answer
-    setAnswers([
+    const newAnswers = [
       ...answers,
       {
         questionId: currentQuestion.question_id,
         value: answer.value,
       },
-    ]);
+    ];
 
     // Move to next question or section
     if (currentQuestionIndex < currentSection.questions.length - 1) {
       // Move to next question in current section
       setCurrentQuestionIndex(currentQuestionIndex + 1);
+      setAnswers(newAnswers);
     } else if (currentSectionIndex < screener.content.sections.length - 1) {
       // Move to first question of next section
       setCurrentSectionIndex(currentSectionIndex + 1);
       setCurrentQuestionIndex(0);
+      setAnswers(newAnswers);
     } else {
-      // Questionnaire complete so submit the answers
-      submitAnswersMutation.mutate(answers);
+      // Last question of last section
+      const finalAnswers = [...newAnswers];
+
+      // Immediately submit the answers
+      submitAnswersMutation.mutate(finalAnswers);
     }
   };
 
