@@ -1,9 +1,6 @@
-import { PrismaClient } from "@prisma/client";
+import { db } from "@/server/db";
 import { NextRequest, NextResponse } from "next/server";
 import { Answer } from "../types";
-
-// Create a singleton Prisma client
-const prisma = new PrismaClient();
 
 // Cache for domain mappings
 let cachedDomainMappings: {
@@ -19,7 +16,7 @@ async function loadDomainMappings() {
   // Return cached mappings if available
   if (cachedDomainMappings) return cachedDomainMappings;
 
-  const domains = await prisma.domain.findMany({
+  const domains = await db.domain.findMany({
     include: {
       questions: {
         select: { id: true },
@@ -112,7 +109,5 @@ export async function POST(request: NextRequest) {
       },
       { status: 500 }
     );
-  } finally {
-    await prisma.$disconnect();
   }
 }

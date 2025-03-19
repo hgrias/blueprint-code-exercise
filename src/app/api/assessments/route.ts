@@ -1,13 +1,11 @@
-import { PrismaClient } from "@prisma/client";
+import { db } from "@/server/db";
 import { NextRequest, NextResponse } from "next/server";
-
-const prisma = new PrismaClient();
 
 export async function POST(request: NextRequest) {
   try {
     const { assessmentIds } = await request.json();
 
-    const assessments = await prisma.assessment.findMany({
+    const assessments = await db.assessment.findMany({
       where: {
         id: {
           in: assessmentIds,
@@ -25,7 +23,5 @@ export async function POST(request: NextRequest) {
       },
       { status: 500 }
     );
-  } finally {
-    await prisma.$disconnect();
   }
 }

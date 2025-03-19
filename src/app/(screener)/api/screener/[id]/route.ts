@@ -1,14 +1,9 @@
-import { PrismaClient } from "@prisma/client";
-import { NextRequest, NextResponse } from "next/server";
+import { db } from "@/server/db";
+import { NextResponse } from "next/server";
 
-const prisma = new PrismaClient();
-
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function GET({ params }: { params: { id: string } }) {
   try {
-    const screener = await prisma.screener.findUnique({
+    const screener = await db.screener.findUnique({
       where: { id: params.id },
     });
 
@@ -29,7 +24,5 @@ export async function GET(
       },
       { status: 500 }
     );
-  } finally {
-    await prisma.$disconnect();
   }
 }

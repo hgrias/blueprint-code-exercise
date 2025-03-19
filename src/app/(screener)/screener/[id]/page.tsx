@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { db } from "@/server/db";
 import { notFound } from "next/navigation";
 import { screenerSchema } from "../../api/screener/types";
 import ScreenerQuestionnaire from "../components/screener-questionnaire";
@@ -8,14 +8,11 @@ export default async function ScreenerPage({
 }: {
   params: { id: string };
 }) {
-  // TODO: Implement database pooling / keep connection open
-  const prisma = new PrismaClient();
-
   // Get screener ID from page params
   const { id: screenerId } = await params;
 
   try {
-    const rawScreener = await prisma.screener.findUnique({
+    const rawScreener = await db.screener.findUnique({
       where: { id: screenerId },
     });
 
@@ -40,7 +37,5 @@ export default async function ScreenerPage({
   } catch (error) {
     console.error("Failed to fetch screener:", error);
     throw new Error("Failed to load screener");
-  } finally {
-    await prisma.$disconnect();
   }
 }
