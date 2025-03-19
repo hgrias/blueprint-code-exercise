@@ -1,5 +1,9 @@
 "use client";
 
+import { Card, CardHeader } from "@/components/ui/card";
+import { Assessment } from "@prisma/client";
+import { useMutation } from "@tanstack/react-query";
+import { Loader2 } from "lucide-react";
 import { useState } from "react";
 import type { Screener, ScreenerAnswerOption } from "../../api/screener/types";
 import CompletionScreen from "../components/completion-screen";
@@ -27,6 +31,7 @@ export default function ScreenerQuestionnaire({
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<Answer[]>([]);
   const [isComplete, setIsComplete] = useState(false);
+  const [assessmentResults, setAssessmentResults] = useState<Assessment[]>([]);
 
   // Get current section and question
   const currentSection = screener.content.sections[currentSectionIndex];
@@ -67,13 +72,89 @@ export default function ScreenerQuestionnaire({
       setCurrentSectionIndex(currentSectionIndex + 1);
       setCurrentQuestionIndex(0);
     } else {
-      // Questionnaire complete
-      setIsComplete(true);
+      // Questionnaire complete so submit the answers
+      submitAnswersMutation.mutate(answers);
     }
   };
 
+  async function submitScreenerAnswers(
+    answers: Answer[]
+  ): Promise<{ results: string[] }> {
+    const response = await fetch("/api/screener/assess", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        answers: answers.map((a) => ({
+          question_id: a.questionId,
+          value: a.value,
+        })),
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to submit assessment");
+    }
+
+    return response.json();
+  }
+
+  const submitAnswersMutation = useMutation({
+    mutationFn: submitScreenerAnswers,
+    onSuccess: async (assessmentResults: { results: string[] }) => {
+      const assessmentIds = assessmentResults.results || [];
+      if (assessmentIds && assessmentIds.length > 0) {
+        try {
+          const response = await fetch("/api/assessments", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ assessmentIds }),
+          });
+
+          if (!response.ok) {
+            throw new Error("Failed to fetch assessments");
+          }
+
+          const recommendedAssessments =
+            (await response.json()) as Assessment[];
+
+          setAssessmentResults(recommendedAssessments);
+        } catch (error) {
+          console.error("Error fetching assessments:", error);
+        }
+      }
+
+      // Mark the screener complete
+      setIsComplete(true);
+    },
+  });
+
+  if (submitAnswersMutation.isPending) {
+    return (
+      <Card className="w-full text-center">
+        <CardHeader>
+          <div className="flex justify-center mb-4">
+            <Loader2 className="h-16 w-16 text-primary animate-spin" />
+          </div>
+          <h2 className="text-2xl font-bold">Processing Assessment</h2>
+          <p className="text-muted-foreground">
+            Please wait while we analyze your responses
+          </p>
+        </CardHeader>
+      </Card>
+    );
+  }
+
   if (isComplete) {
-    return <CompletionScreen answers={answers} screener={screener} />;
+    return (
+      <CompletionScreen
+        assessments={assessmentResults || []}
+        screener={screener}
+      />
+    );
   }
 
   return (

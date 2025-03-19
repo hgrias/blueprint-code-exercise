@@ -4,15 +4,19 @@ import { screenerSchema } from "../../api/screener/types";
 import ScreenerQuestionnaire from "../components/screener-questionnaire";
 
 export default async function ScreenerPage({
-  params,
-}: {
-  params: { id: string };
+  params
+}: { 
+  params: { id: string } 
 }) {
+  // TODO: Implement database pooling / keep connection open
   const prisma = new PrismaClient();
+
+  // Get screener ID from page params
+  const { id: screenerId } = await params;
 
   try {
     const rawScreener = await prisma.screener.findUnique({
-      where: { id: params.id },
+      where: { id: screenerId },
     });
 
     if (!rawScreener) {
