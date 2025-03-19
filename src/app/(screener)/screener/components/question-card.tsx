@@ -11,16 +11,12 @@ import type {
 interface QuestionCardProps {
   section: ScreenerSection;
   question: ScreenerQuestion;
-  questionNumber: number;
-  totalQuestions: number;
   onAnswerSelected: (answer: ScreenerAnswerOption) => void;
 }
 
 export default function QuestionCard({
   section,
   question,
-  questionNumber,
-  totalQuestions,
   onAnswerSelected,
 }: QuestionCardProps) {
   return (
@@ -28,9 +24,6 @@ export default function QuestionCard({
       <CardHeader className="space-y-2">
         <p className="text-sm text-muted-foreground">{section.title}</p>
         <h2 className="text-xl font-semibold">{question.title}</h2>
-        <p className="text-sm text-muted-foreground">
-          Question {questionNumber} of {totalQuestions}
-        </p>
       </CardHeader>
       <CardContent>
         <div className="flex flex-col space-y-2">

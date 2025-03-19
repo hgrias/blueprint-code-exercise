@@ -167,13 +167,15 @@ export default function ScreenerQuestionnaire({
         <p className="text-muted-foreground">{screener.content.display_name}</p>
       </div>
 
-      <ProgressBar progress={progress} />
+      <ProgressBar
+        progress={progress}
+        currentQuestionNumber={currentQuestionNumber}
+        totalQuestions={totalQuestions}
+      />
 
       <QuestionCard
         section={currentSection}
         question={currentQuestion}
-        questionNumber={currentQuestionNumber}
-        totalQuestions={totalQuestions}
         onAnswerSelected={handleAnswerSelected}
       />
     </div>
