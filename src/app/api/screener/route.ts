@@ -1,12 +1,18 @@
 import { PrismaClient } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
-import { Answer, DomainObject } from "./types";
+import { Answer } from "./types";
 
 // Create a singleton Prisma client
 const prisma = new PrismaClient();
 
 // Cache for domain mappings
-let cachedDomainMappings: Record<string, DomainObject> | null = null;
+let cachedDomainMappings: {
+  questionToDomainMap: Record<
+    string,
+    { domainId: string; threshold: number; assessment: string }
+  >;
+  domainToInfoMap: Record<string, { threshold: number; assessment: string }>;
+} | null = null;
 
 // Load domain mappings from the database
 async function loadDomainMappings() {
@@ -22,7 +28,7 @@ async function loadDomainMappings() {
   });
 
   // Create a mapping of question IDs to respective domain objects
-  cachedDomainMappings = domains.reduce((map, domain) => {
+  const questionToDomainMap = domains.reduce((map, domain) => {
     domain.questions.forEach((question) => {
       map[question.id] = {
         domainId: domain.id,
@@ -33,13 +39,28 @@ async function loadDomainMappings() {
     return map;
   }, {} as Record<string, { domainId: string; threshold: number; assessment: string }>);
 
+  // Create a mapping of domain IDs to their info
+  const domainToInfoMap = domains.reduce((map, domain) => {
+    map[domain.id] = {
+      threshold: domain.threshold || 2,
+      assessment: domain.assessmentId || "UNDEFINED_ASSESSMENT",
+    };
+    return map;
+  }, {} as Record<string, { threshold: number; assessment: string }>);
+
+  // Set the mappings to the cache
+  cachedDomainMappings = {
+    questionToDomainMap,
+    domainToInfoMap,
+  };
+
   return cachedDomainMappings;
 }
 
 export async function POST(request: NextRequest) {
   try {
     // Load domain mappings
-    const questionToDomainMap = await loadDomainMappings();
+    const { questionToDomainMap, domainToInfoMap } = await loadDomainMappings();
 
     // Parse incoming answers
     const { answers } = (await request.json()) as { answers: Answer[] };
@@ -49,40 +70,39 @@ export async function POST(request: NextRequest) {
 
     answers.forEach((answer) => {
       // Get the domain for the question via the mapping
-      const domainInfo = questionToDomainMap[answer.question_id];
+      const { domainId } = questionToDomainMap[answer.question_id];
 
       // Throw error if there is no domain associated with the question
-      if (!domainInfo) {
+      if (!domainId) {
         throw new Error(
           `Question ID does not have an associated domain: ${answer.question_id}`
         );
       }
 
       // Add score to domain
-      domainScores[domainInfo.domainId] =
-        (domainScores[domainInfo.domainId] || 0) + answer.value;
+      domainScores[domainId] = (domainScores[domainId] || 0) + answer.value;
     });
 
     // Determine assessments based on domain scores and thresholds
-    const results: string[] = [];
+    const assessments: string[] = [];
 
     // Get assessments for domains
     for (const [domainId, score] of Object.entries(domainScores)) {
       // Get the scoring threshold and relevant assessment for the domain
-      const { threshold, assessment } = questionToDomainMap[domainId];
+      const { threshold, assessment } = domainToInfoMap[domainId];
 
       // Check if domain score meets its threshold
       if (score >= threshold) {
         // Add assessment if not already in results
-        if (!results.includes(assessment)) {
-          results.push(assessment);
+        if (!assessments.includes(assessment)) {
+          assessments.push(assessment);
         }
       }
     }
 
     // TODO: Store answers in DB for specific user
 
-    return NextResponse.json({ results: results });
+    return NextResponse.json({ results: assessments });
   } catch (error) {
     console.error("Screener computation error:", error);
     return NextResponse.json(

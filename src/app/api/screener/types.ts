@@ -14,11 +14,3 @@ export const answerSchema = z.object({
 });
 
 export type Answer = z.infer<typeof answerSchema>;
-
-export const DomainObjectSchema = z.object({
-  domainId: z.string(),
-  threshold: z.number().int().min(0),
-  assessment: z.string(),
-});
-
-export type DomainObject = z.infer<typeof DomainObjectSchema>;
