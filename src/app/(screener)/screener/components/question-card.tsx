@@ -1,12 +1,12 @@
 "use client";
 
-import type {
-  ScreenerSection,
-  ScreenerQuestion,
-  ScreenerAnswerOption,
-} from "@/lib/types";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import type {
+  ScreenerAnswerOption,
+  ScreenerQuestion,
+  ScreenerSection,
+} from "../../api/screener/types";
 
 interface QuestionCardProps {
   section: ScreenerSection;
