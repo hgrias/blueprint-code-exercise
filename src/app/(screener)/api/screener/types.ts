@@ -67,7 +67,7 @@ export const screenerSchema = z.object({
   content: screenerContentSchema.describe(
     "Detailed content and structure of the screener"
   ),
-  full_name: z
+  fullName: z
     .string()
     .describe("Complete, human-readable name of the screener"),
 });
