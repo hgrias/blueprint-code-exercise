@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
-import { Answer } from "./types";
+import { Answer } from "../types";
 
 // Create a singleton Prisma client
 const prisma = new PrismaClient();
