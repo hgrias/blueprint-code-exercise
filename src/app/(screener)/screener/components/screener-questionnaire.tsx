@@ -5,15 +5,14 @@ import { Assessment } from "@prisma/client";
 import { useMutation } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
 import { useState } from "react";
-import type { Screener, ScreenerAnswerOption } from "../../api/screener/types";
+import type {
+  Answer,
+  Screener,
+  ScreenerAnswerOption,
+} from "../../api/screener/types";
 import CompletionScreen from "../components/completion-screen";
 import ProgressBar from "../components/progress-bar";
 import QuestionCard from "../components/question-card";
-
-type Answer = {
-  questionId: string;
-  value: number;
-};
 
 export default function ScreenerQuestionnaire({
   screener,
@@ -57,7 +56,7 @@ export default function ScreenerQuestionnaire({
     const newAnswers = [
       ...answers,
       {
-        questionId: currentQuestion.question_id,
+        question_id: currentQuestion.question_id,
         value: answer.value,
       },
     ];
@@ -91,7 +90,7 @@ export default function ScreenerQuestionnaire({
       },
       body: JSON.stringify({
         answers: answers.map((a) => ({
-          question_id: a.questionId,
+          question_id: a.question_id,
           value: a.value,
         })),
       }),
