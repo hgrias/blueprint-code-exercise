@@ -4,9 +4,9 @@ import { screenerSchema } from "../../api/screener/types";
 import ScreenerQuestionnaire from "../components/screener-questionnaire";
 
 export default async function ScreenerPage({
-  params
-}: { 
-  params: { id: string } 
+  params,
+}: {
+  params: { id: string };
 }) {
   // TODO: Implement database pooling / keep connection open
   const prisma = new PrismaClient();
@@ -31,7 +31,7 @@ export default async function ScreenerPage({
     }
 
     return (
-      <main className="flex min-h-screen flex-col items-center justify-center p-4 md:p-24">
+      <main className="flex min-h-screen flex-col items-center justify-center p-4 md:p-24 md:pt-12">
         <div className="w-full max-w-2xl">
           <ScreenerQuestionnaire screener={screener} />
         </div>
