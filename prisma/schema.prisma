@@ -1,9 +1,6 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -19,6 +16,23 @@ model Screener {
   displayName String
   fullName    String
   disorder    String
+  content     Json
+}
+
+model UserAnswer {
+  id         String   @id @default(cuid())
+  questionId String
+  value      Int
+  userId     String?
+  screenerId String?
+  answeredAt DateTime @default(now())
+}
+
+model Question {
+  id       String @id @unique
+  title    String
+  domainId String
+  domain   Domain @relation(fields: [domainId], references: [id])
 }
 
 model Domain {
@@ -37,11 +51,4 @@ model Assessment {
   description  String?
   referenceUrl String?
   Domain       Domain[]
-}
-
-model Question {
-  id       String @id @unique
-  title    String
-  domainId String
-  domain   Domain @relation(fields: [domainId], references: [id])
 }
