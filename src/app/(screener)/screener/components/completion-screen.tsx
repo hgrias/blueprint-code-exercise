@@ -31,7 +31,7 @@ export default function CompletionScreen({
           <h3 className="text-xl font-semibold mb-4 text-center">
             Recommended Follow-up Assessments
           </h3>
-          <div className="grid gap-4 md:grid-cols-2">
+          <div className="grid gap-4">
             {assessments.map((assessment) => (
               <a
                 key={assessment.id}
@@ -39,7 +39,7 @@ export default function CompletionScreen({
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <Card className="hover:bg-muted/50 transition-colors min-h-36">
+                <Card className="hover:bg-muted/50 transition-colors min-h-24">
                   <CardHeader>
                     <h4 className="text-lg font-semibold">{assessment.name}</h4>
                     {assessment.description && (
