@@ -39,7 +39,7 @@ export default function CompletionScreen({
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <Card className="hover:bg-muted/50 transition-colors h-36">
+                <Card className="hover:bg-muted/50 transition-colors min-h-36">
                   <CardHeader>
                     <h4 className="text-lg font-semibold">{assessment.name}</h4>
                     {assessment.description && (
