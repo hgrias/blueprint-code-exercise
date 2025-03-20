@@ -2,7 +2,9 @@
 
 ## Problem Description
 
-This application is a mental health diagnostic screening tool that allows patients to complete a cross-cutting symptom assessment. The application consists of two main components:
+This application is a mental health diagnostic screening tool that allows patients to complete a cross-functional symptom assessment which allows clinicians to recommend specific mental health assessments based the patients answers.
+
+The application consists of two main components:
 
 1. A backend API that scores user answers and recommends follow-up assessments
 2. A user-facing user interface for completing the diagnostic screener
@@ -13,6 +15,20 @@ This application is a mental health diagnostic screening tool that allows patien
 - **Frontend**: Next.js with React, Tailwind, and Shadcn components
 - **Database**: PostgreSQL with Prisma ORM
 - **Containerization**: Docker
+
+## Technical Choices + Considerations
+
+### Framework - NextJS
+
+I used NextJS as I was most comfortable with it and it allows me to build full stack applications all with 1 framework. It works well with a variety of deployment options, however I would say it is definitely built for serverless environments first. The developer community surrounding NextJS and Vercel is very robust which helps for maintainability purposes.
+
+### Database - Postgres + Prisma ORM
+
+Postgres is simple and an industry standard. I like how it supports jsonb attributes which allows me flexibility in prototyping models as well as parsing objects using typescript and zod.
+
+Prisma is simple to use and allows me to build and iterate quickly, however, some voice [concerns about its performance at scale](https://www.reddit.com/r/nextjs/comments/1i9zvyy/warning_think_twice_before_using_prisma_in_large/) although I have not personally experienced it.
+
+
 
 ## Prerequisites
 
@@ -40,12 +56,6 @@ This application is a mental health diagnostic screening tool that allows patien
    - Assess Screener Endpoint: POST http://localhost:3000/api/screener/assess
    - Get Screener Endpoint: GET http://localhost:3000/api/screener/[id]
 
-### Development Features
-
-- Hot reloading for frontend and backend
-- Prisma database migrations
-- Comprehensive error handling
-
 ## Production Deployment Considerations
 
 ### Reliability
@@ -60,14 +70,17 @@ This application is a mental health diagnostic screening tool that allows patien
 - Add authentication and authorization
 - Use environment-specific configuration management
 - Implement comprehensive logging and monitoring
+- Secure API endpoints via user auth
 
 ## Future Improvements
 
+- Tests!
 - Add user authentication
-- Implement more comprehensive error tracking
+- Implement more robust caching with invalidation for domain mappings (Redis)
+- Implement more comprehensive logging (OpenTelemetry Standard + Datadog)
 - Create admin dashboard for clinicians
 - Expand assessment types
-- Save user responses / recommended assessments
+- Persist user responses / recommended assessments
 
 ## Troubleshooting
 
