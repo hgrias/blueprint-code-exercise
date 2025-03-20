@@ -1,36 +1,78 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Blueprint Diagnostic Screener
 
-## Getting Started
+## Problem Description
 
-First, run the development server:
+This application is a mental health diagnostic screening tool that allows patients to complete a cross-cutting symptom assessment. The application consists of two main components:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+1. A backend API that scores user answers and recommends follow-up assessments
+2. A user-facing user interface for completing the diagnostic screener
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Technical Overview
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Backend**: Next.js API Routes
+- **Frontend**: Next.js with React, Tailwind, and Shadcn components
+- **Database**: PostgreSQL with Prisma ORM
+- **Containerization**: Docker
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Prerequisites
 
-## Learn More
+- Docker Desktop
+- Docker Compose
+- Git
 
-To learn more about Next.js, take a look at the following resources:
+## Running the Application
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Local Development
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. Clone the repository
+   ```bash
+   git clone https://github.com/yourusername/blueprint-diagnostic-screener.git
+   cd blueprint-diagnostic-screener
+   ```
 
-## Deploy on Vercel
+2. Start the application using Docker Compose
+   ```bash
+   docker compose up --build
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+3. Access the application
+   - Web Interface: http://localhost:3000
+   - Assess Screener Endpoint: POST http://localhost:3000/api/screener/assess
+   - Get Screener Endpoint: GET http://localhost:3000/api/screener/[id]
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Development Features
+
+- Hot reloading for frontend and backend
+- Prisma database migrations
+- Comprehensive error handling
+
+## Production Deployment Considerations
+
+### Reliability
+- Implement horizontal scaling
+- Use container orchestration (Kubernetes)
+- Set up database replication
+- Implement circuit breakers and retry mechanisms
+
+### Security
+- Use HTTPS with strong TLS configuration
+- Implement rate limiting
+- Add authentication and authorization
+- Use environment-specific configuration management
+- Implement comprehensive logging and monitoring
+
+## Future Improvements
+
+- Add user authentication
+- Implement more comprehensive error tracking
+- Create admin dashboard for clinicians
+- Expand assessment types
+- Save user responses / recommended assessments
+
+## Troubleshooting
+
+If you encounter issues:
+- Ensure Docker is running
+- Check container logs with `docker compose logs`
+- Verify network ports are not in use
+- Restart containers with `docker compose down && docker compose up --build`
