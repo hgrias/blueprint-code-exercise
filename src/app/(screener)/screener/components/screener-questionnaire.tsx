@@ -49,7 +49,6 @@ export default function ScreenerQuestionnaire({
   };
 
   const currentQuestionNumber = calculateOverallQuestionNumber();
-  const progress = (currentQuestionNumber / totalQuestions) * 100;
 
   // Handle answer selection
   const handleAnswerSelected = (answer: ScreenerAnswerOption) => {
@@ -168,7 +167,6 @@ export default function ScreenerQuestionnaire({
       </div>
 
       <ProgressBar
-        progress={progress}
         currentQuestionNumber={currentQuestionNumber}
         totalQuestions={totalQuestions}
       />
