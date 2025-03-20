@@ -1,5 +1,8 @@
 # Blueprint Diagnostic Screener
 
+https://github.com/user-attachments/assets/1902b38e-b710-4c51-9464-87e91e422d38
+[Link to Demo Video](https://vimeo.com/1067832756?share=copy)
+
 ## Problem Description
 
 This application is a mental health diagnostic screening tool that allows patients to complete a cross-functional symptom questionaire which allows clinicians to recommend specific mental health assessments based the patients answers.
