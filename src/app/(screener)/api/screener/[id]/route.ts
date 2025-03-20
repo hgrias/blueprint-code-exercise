@@ -1,10 +1,15 @@
 import { db } from "@/server/db";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function GET({ params }: { params: { id: string } }) {
+export async function GET(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const { id: screenerId } = await params;
+
   try {
     const screener = await db.screener.findUnique({
-      where: { id: params.id },
+      where: { id: screenerId },
     });
 
     if (!screener) {

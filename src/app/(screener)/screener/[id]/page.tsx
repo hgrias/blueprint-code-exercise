@@ -6,7 +6,7 @@ import ScreenerQuestionnaire from "../components/screener-questionnaire";
 export default async function ScreenerPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
   // Get screener ID from page params
   const { id: screenerId } = await params;
