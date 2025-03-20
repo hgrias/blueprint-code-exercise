@@ -11,6 +11,7 @@ let cachedDomainMappings: {
   domainToInfoMap: Record<string, { threshold: number; assessment: string }>;
 } | null = null;
 
+// TODO: Implement more robust caching mechanism (redis) with invalidation
 // Load domain mappings from the database
 async function loadDomainMappings() {
   // Return cached mappings if available
