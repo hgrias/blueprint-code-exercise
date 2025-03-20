@@ -1,4 +1,5 @@
 import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
 
 interface ProgressBarProps {
   progress: number;
@@ -14,21 +15,12 @@ export default function ProgressBar({
   return (
     <div className="flex flex-col space-y-2">
       <div className="flex justify-between">
-        <p>Your Progress</p>
-        <Badge variant="outline" className="">
+        <p className="font-semibold">Your Progress</p>
+        <Badge variant="default">
           Question {currentQuestionNumber} of {totalQuestions}
         </Badge>
       </div>
-      <div className="w-full bg-muted rounded-full h-2.5">
-        <div
-          className="bg-primary h-2.5 rounded-full transition-all duration-300 ease-in-out"
-          style={{ width: `${progress}%` }}
-          role="progressbar"
-          aria-valuenow={progress}
-          aria-valuemin={0}
-          aria-valuemax={100}
-        />
-      </div>
+      <Progress value={progress} />
     </div>
   );
 }
