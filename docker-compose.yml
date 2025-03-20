@@ -8,9 +8,21 @@ services:
     volumes:
       - .:/app
       - /app/node_modules
-      - /app/.next  # Exclude `.next` from being overwritten
+      - /app/.next # Exclude `.next` from being overwritten
     depends_on:
-      - db
+      db:
+        condition: service_healthy
+    command: >
+      sh -c "
+      while ! nc -z db 5432;
+      do
+        echo 'Waiting for PostgreSQL to start...';
+        sleep 1;
+      done;
+      npm run db:seed && 
+      npm run db:migrate && 
+      npm run start
+      "
 
   db:
     image: postgres:15
@@ -22,6 +34,11 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d mydatabase"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
 volumes:
   postgres_data:

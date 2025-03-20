@@ -14,7 +14,6 @@ The application consists of two main components:
 - **Backend**: Next.js API Routes
 - **Frontend**: Next.js with React, Tailwind, and Shadcn components
 - **Database**: PostgreSQL with Prisma ORM
-- **Containerization**: Docker
 
 ## Technical Choices + Considerations
 
@@ -38,20 +37,56 @@ Prisma is simple to use and allows me to build and iterate quickly, however, som
 
 ## Running the Application
 
-### Local Development
+### Running Locally
 
-1. Clone the repository
-   ```bash
-   git clone https://github.com/yourusername/blueprint-diagnostic-screener.git
-   cd blueprint-diagnostic-screener
-   ```
+Clone the repository
 
-2. Start the application using Docker Compose
+```bash
+git clone https://github.com/yourusername/blueprint-diagnostic-screener.git
+cd blueprint-diagnostic-screener
+```
+
+### Production Server
+
+If you wish to run a "productionized" NextJS server locally using docker:
+
+1. Start the application and database using Docker Compose
    ```bash
    docker compose up --build
    ```
 
-3. Access the application
+2. Access the application
+   - Web Interface: http://localhost:3000
+   - Assess Screener Endpoint: POST http://localhost:3000/api/screener/assess
+   - Get Screener Endpoint: GET http://localhost:3000/api/screener/[id]
+
+3. When done, stop the services
+   ```
+   docker compose down
+   ```
+
+### Development Server
+
+If you wish to run a dev server locally, use the following:
+
+1. Start just the database service
+   ```bash
+   docker compose up db -d
+   ```
+
+2. If you have not already created a `.env` file, do so in the project root and copy over values from [`.env.example`](.env.example)
+
+2. Reset the database, apply migrations, then seed it
+   ```bash
+   npm run db:reset && npm run db:generate && npm run db:seed
+   ```
+
+3. Start the local dev server
+   ```bash
+   npm run dev
+   ```
+
+4. Access the application
    - Web Interface: http://localhost:3000
    - Assess Screener Endpoint: POST http://localhost:3000/api/screener/assess
    - Get Screener Endpoint: GET http://localhost:3000/api/screener/[id]
@@ -74,7 +109,7 @@ Prisma is simple to use and allows me to build and iterate quickly, however, som
 
 ## Future Improvements
 
-- Tests!
+- Tests
 - Add user authentication
 - Implement more robust caching with invalidation for domain mappings (Redis)
 - Implement more comprehensive logging (OpenTelemetry Standard + Datadog)
