@@ -20,10 +20,10 @@ export default function QuestionCard({
   onAnswerSelected,
 }: QuestionCardProps) {
   return (
-    <Card className="w-full shadow-2xl">
+    <Card className="w-full shadow-2xl gap-4">
       <CardHeader className="space-y-2">
-        <p className="text-sm text-muted-foreground">{section.title}</p>
-        <h2 className="text-xl font-semibold">{question.title}</h2>
+        <p className="">{section.title}</p>
+        <h2 className="text-xl font-semibold min-h-14">{question.title}</h2>
       </CardHeader>
       <CardContent>
         <div className="flex flex-col space-y-2">
