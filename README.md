@@ -15,26 +15,6 @@ The application consists of two main components:
 - **Frontend**: Next.js with React, Tailwind, and Shadcn components
 - **Database**: PostgreSQL with Prisma ORM
 
-## Technical Choices + Considerations
-
-### Framework - NextJS
-
-I used NextJS as I was most comfortable with it and it allows me to build full stack applications all with 1 framework. It works well with a variety of deployment options, however I would say it is definitely built for serverless environments first. The developer community surrounding NextJS and Vercel is very robust which helps for maintainability purposes.
-
-### Database - Postgres + Prisma ORM
-
-Postgres is simple and an industry standard. I like how it supports jsonb attributes which allows me flexibility in prototyping models as well as parsing objects using typescript and zod.
-
-Prisma is simple to use and allows me to build and iterate quickly, however, some voice [concerns about its performance at scale](https://www.reddit.com/r/nextjs/comments/1i9zvyy/warning_think_twice_before_using_prisma_in_large/) although I have not personally experienced it.
-
-
-
-## Prerequisites
-
-- Docker Desktop
-- Docker Compose
-- Git
-
 ## Running the Application
 
 ### Running Locally
@@ -91,36 +71,78 @@ If you wish to run a dev server locally, use the following:
    - Assess Screener Endpoint: POST http://localhost:3000/api/screener/assess
    - Get Screener Endpoint: GET http://localhost:3000/api/screener/[id]
 
+## Technical Choices + Considerations
+
+### Framework - NextJS
+
+I used NextJS as I was most comfortable with it and it allows me to build full stack applications all with 1 framework. It works well with a variety of deployment options, however I would say it is definitely built for serverless environments first. The developer community surrounding NextJS and Vercel is very robust which helps for maintainability purposes.
+
+### Database - Postgres + Prisma ORM
+
+Postgres is simple and an industry standard. I like how it supports jsonb attributes which allows me flexibility in prototyping models as well as parsing objects using typescript and zod.
+
+Prisma is simple to use and allows me to build and iterate quickly, however, some voice [concerns about its performance at scale](https://www.reddit.com/r/nextjs/comments/1i9zvyy/warning_think_twice_before_using_prisma_in_large/) although I have not personally experienced it.
+
+## Prerequisites
+
+- Docker Desktop
+- Docker Compose
+- Git
+
 ## Production Deployment Considerations
 
-### Reliability
-- Implement horizontal scaling
+### Reliability, Availability + Performance
+
+The type of application, expected users/workloads, types of workloads, etc all play into how I would go about deploying an application. For this example, the simplicity of the scoring logic and user interaction lend itself to being deployed in multiple ways: serverless, via VPS, or containerized services.
+
+To have the most control, I would opt for VPS or containerized deployments which would allow:
+
+- Horizontal scaling
 - Use container orchestration (Kubernetes)
-- Set up database replication
-- Implement circuit breakers and retry mechanisms
+- Database replication, indexing, sharding, etc (Separate from application deployment)
+- Circuit breakers and retry mechanisms
+
+This way, if our application scales to millions of users a day, we would be able to scale up and down according to traffic.
 
 ### Security
+
+In this example, I did not implement any security mechanisms. In a production application we would want to implement the following to make sure our API and applications are secured from those without authorization and bad actors.
+
 - Use HTTPS with strong TLS configuration
 - Implement rate limiting
-- Add authentication and authorization
+- Add user authentication and authorization via OAuth or similar
 - Use environment-specific configuration management
 - Implement comprehensive logging and monitoring
-- Secure API endpoints via user auth
+- Secure API endpoints via user auth (tokens or cookies)
+
+### Observability
+
+Observability is a major necessity as it is our insight into how the system is working and performing. I would look to implement logging, metrics, and tracing tools:
+
+- Logging: Effective logging helps you track errors, warnings, and application flow
+- Metrics: Metrics provide insights into app performance such as response time and throughput
+- Tracing: Tracing helps identify performance bottlenecks by tracking requests across services
+
+OpenTelemetry and Datadog would be a comprehensive start.
 
 ## Future Improvements
 
+Some other (required) improvements could be:
+
 - Tests
-- Add user authentication
+- Add CICD for automatic testing, deployments, database migrations, and environment promotion
 - Implement more robust caching with invalidation for domain mappings (Redis)
 - Implement more comprehensive logging (OpenTelemetry Standard + Datadog)
 - Create admin dashboard for clinicians
 - Expand assessment types
 - Persist user responses / recommended assessments
 
-## Troubleshooting
+## More About Me
 
-If you encounter issues:
-- Ensure Docker is running
-- Check container logs with `docker compose logs`
-- Verify network ports are not in use
-- Restart containers with `docker compose down && docker compose up --build`
+Some code I'm particularly proud of:
+
+- [NomosLearning](https://www.nomoslearning.com/) - An AI powered learning platform for law students
+  - Currently at ~50 MAU
+  - NextJS, Typescript, tRPC, Prisma, TailwindCSS, Postgres
+  - Fullstack typesafety
+- [My Github](https://github.com/hgrias)
