@@ -1,8 +1,8 @@
 import { PrismaClient } from "@prisma/client";
-import domainMapping from "../src/data/domain-mapping.json";
-import sampleAssessments from "../src/data/sample-assessments.json";
-import sampleDomains from "../src/data/sample-domains.json";
-import sampleQuestions from "../src/data/sample-questions.json";
+import domainMapping from "./data/domain-mapping.json";
+import sampleAssessments from "./data/sample-assessments.json";
+import sampleDomains from "./data/sample-domains.json";
+import sampleQuestions from "./data/sample-questions.json";
 
 const prisma = new PrismaClient();
 
