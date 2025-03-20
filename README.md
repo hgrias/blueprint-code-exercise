@@ -2,7 +2,7 @@
 
 ## Problem Description
 
-This application is a mental health diagnostic screening tool that allows patients to complete a cross-functional symptom assessment which allows clinicians to recommend specific mental health assessments based the patients answers.
+This application is a mental health diagnostic screening tool that allows patients to complete a cross-functional symptom questionaire which allows clinicians to recommend specific mental health assessments based the patients answers.
 
 The application consists of two main components:
 
