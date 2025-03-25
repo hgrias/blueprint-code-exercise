@@ -14,7 +14,8 @@
     "db:seed": "tsx prisma/seed.ts",
     "db:reset": "prisma migrate reset",
     "postinstall": "prisma generate",
-    "test": "jest"
+    "test": "jest",
+    "test:watch": "jest --watch"
   },
   "dependencies": {
     "@prisma/client": "^6.5.0",
