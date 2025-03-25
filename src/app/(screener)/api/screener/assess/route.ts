@@ -1,6 +1,7 @@
 import { db } from "@/server/db";
 import { NextRequest, NextResponse } from "next/server";
-import { Answer } from "../types";
+import { answerSchema } from "../types";
+import { z } from "zod";
 
 // Cache for domain mappings
 let cachedDomainMappings: {
@@ -55,13 +56,30 @@ async function loadDomainMappings() {
   return cachedDomainMappings;
 }
 
+const requestBodySchema = z.object({
+  answers: z.array(answerSchema).min(1, "There must be at least 1 answer"),
+});
+
 export async function POST(request: NextRequest) {
   try {
+    // Parse and validate request body
+    const jsonBody = await request.json();
+    const validation = requestBodySchema.safeParse(jsonBody);
+
+    if (!validation.success) {
+      return NextResponse.json(
+        {
+          error: "Invalid request body",
+          details: validation.error.format(),
+        },
+        { status: 400 }
+      );
+    }
+
+    const { answers } = validation.data; // Parsed and validated data
+
     // Load domain mappings
     const { questionToDomainMap, domainToInfoMap } = await loadDomainMappings();
-
-    // Parse incoming answers
-    const { answers } = (await request.json()) as { answers: Answer[] };
 
     // Keep track of domain scores
     const domainScores: Record<string, number> = {};
