@@ -7,11 +7,13 @@ const screenerIdSchema = z.string().min(1, "Screener ID cannot be empty");
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
+
     // Validate screener ID
-    const screenerIdValidation = screenerIdSchema.safeParse(params.id);
+    const screenerIdValidation = screenerIdSchema.safeParse(id);
 
     if (!screenerIdValidation.success) {
       return NextResponse.json(
