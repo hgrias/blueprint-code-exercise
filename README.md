@@ -21,6 +21,11 @@ The application consists of two main components:
 
 ## Running the Application
 
+### Pre-Requisites
+
+1. [Docker Desktop](https://www.docker.com/products/docker-desktop/)
+2. [npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
+
 ### Running Locally
 
 Clone the repository
@@ -58,19 +63,27 @@ If you wish to run a dev server locally, use the following:
    docker compose up db -d
    ```
 
-2. If you have not already created a `.env` file, do so in the project root and copy over values from [`.env.example`](.env.example)
+2. Copy the [`.env.example`](.env.example) file to a new `.env` file for your local environment variables
+   ```bash
+   cp .env.example .env
+   ```
 
-2. Reset the database, apply migrations, then seed it
+3. Install dependencies using npm
+   ```bash
+   npm install
+   ```
+
+4. Reset the database, apply migrations, then seed it
    ```bash
    npm run db:reset && npm run db:generate && npm run db:seed
    ```
 
-3. Start the local dev server
+5. Start the local dev server
    ```bash
    npm run dev
    ```
 
-4. Access the application
+6. Access the application
    - Web Interface: http://localhost:3000
    - Assess Screener Endpoint: POST http://localhost:3000/api/screener/assess
    - Get Screener Endpoint: GET http://localhost:3000/api/screener/[id]
