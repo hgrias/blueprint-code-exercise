@@ -31,8 +31,8 @@ The application consists of two main components:
 Clone the repository
 
 ```bash
-git clone https://github.com/yourusername/blueprint-diagnostic-screener.git
-cd blueprint-diagnostic-screener
+git clone https://github.com/hgrias/blueprint-code-exercise.git
+cd blueprint-code-exercise
 ```
 
 ### Production Server
